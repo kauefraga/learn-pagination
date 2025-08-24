@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS posts (
 
 -- insertions
 INSERT INTO users (name) VALUES
+('Ângela Pacheco'), ('Bárbara Tomé'), ('Caíque Barreto'), ('Daniele Cordeiro'), ('Enzo Albuquerque'),
 ('Ana Clara'), ('Bruno Silva'), ('Carla Mendes'), ('Diego Rocha'), ('Eduarda Souza'),
 ('Felipe Martins'), ('Gabriela Ramos'), ('Henrique Castro'), ('Isabela Almeida'), ('João Pedro'),
 ('Kátia Nogueira'), ('Lucas Andrade'), ('Mariana Costa'), ('Nicolas Vieira'), ('Olívia Fernandes'),
