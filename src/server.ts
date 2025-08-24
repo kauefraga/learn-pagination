@@ -2,7 +2,6 @@ import fastifySwagger from '@fastify/swagger';
 import scalarSwagger from '@scalar/fastify-api-reference';
 import fastify from 'fastify';
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
-import { z } from 'zod';
 
 export function createServer() {
   const app = fastify();
@@ -25,37 +24,23 @@ export function createServer() {
     routePrefix: '/docs',
   });
 
-  app.after(() => {
-    app.withTypeProvider<ZodTypeProvider>().route({
-      method: 'GET',
-      url: '/v1/users',
-      handler: () => {
-        return {
-          data: [],
-        };
-      }
-    });
+  return app.withTypeProvider<ZodTypeProvider>();
+}
 
-    const PARAMS_SCHEMA = z.object({
-      from: z.date(),
-      to: z.date()
-    }).partial();
+type HttpContext = ReturnType<typeof createServer>;
 
-    app.withTypeProvider<ZodTypeProvider>().route({
-      method: 'GET',
-      url: '/v1/posts',
-      schema: {
-        querystring: PARAMS_SCHEMA,
-      },
-      handler: (request, reply) => {
-        console.log(request.query);
+export type ServerContext = {
+  http: HttpContext,
+};
 
-        return {
-          data: [],
-        };
-      }
-    });
-  });
+type Controller = (context: ServerContext) => void;
 
-  return app;
+export function defineController(controller: Controller): Controller {
+  return (context) => controller(context);
+}
+
+export function defineRoutes(context: ServerContext, controllers: Controller[]) {
+  for (const c of controllers) {
+    c(context);
+  }
 }
