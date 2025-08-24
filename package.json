@@ -3,13 +3,15 @@
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node --env-file=.env .",
     "build": "tsup src/index.ts",
-    "dev": "tsx --watch src/index.ts",
+    "dev": "tsx --env-file=.env --watch src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
     "tsup": "^8.5.0",
     "tsx": "^4.20.4",
     "typescript": "^5.9.2"
@@ -17,8 +19,10 @@
   "dependencies": {
     "@fastify/swagger": "^9.5.1",
     "@scalar/fastify-api-reference": "^1.34.4",
+    "drizzle-orm": "^0.44.4",
     "fastify": "^5.5.0",
     "fastify-type-provider-zod": "^5.0.3",
+    "pg": "^8.16.3",
     "zod": "^4.1.0"
   }
 }
