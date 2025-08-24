@@ -2,6 +2,7 @@ import fastifySwagger from '@fastify/swagger';
 import scalarSwagger from '@scalar/fastify-api-reference';
 import fastify from 'fastify';
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+import { DatabaseContext } from './database';
 
 export function createServer() {
   const app = fastify();
@@ -31,6 +32,7 @@ type HttpContext = ReturnType<typeof createServer>;
 
 export type ServerContext = {
   http: HttpContext,
+  db: DatabaseContext,
 };
 
 type Controller = (context: ServerContext) => void;

@@ -1,5 +1,6 @@
 import { createServer, defineRoutes, ServerContext } from './server';
 
+import { db } from './database';
 import { PostsController } from './posts/posts.controller';
 import { UsersController } from './users/users.controller';
 
@@ -7,6 +8,7 @@ const http = createServer();
 
 const context: ServerContext = {
   http,
+  db,
 };
 
 // `http.after` needed to zod type provider work correctly, and thus swagger
