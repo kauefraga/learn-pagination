@@ -1,3 +1,4 @@
+import { gt } from 'drizzle-orm';
 import { z } from 'zod';
 import { UsersTable } from '../database/schema';
 import { defineController } from '../server';
@@ -79,5 +80,37 @@ export const UsersController = defineController(({ http, db }) => {
         nextOffset
       };
     }
+  });
+
+  http.route({
+    method: 'GET',
+    url: '/v1/cursor/users',
+    schema: {
+      querystring: z.object({
+        cursor: z.coerce.number(),
+        limit: z.coerce.number(),
+      }),
+      response: {
+        200: z.object({
+          data: z.array(UserSchema),
+          nextCursor: z.number(), // an user id
+        }),
+      },
+    },
+    handler: async (request) => {
+      const { cursor, limit } = request.query;
+
+      const users = await db.select().from(UsersTable)
+        .where(gt(UsersTable.id, cursor))
+        .limit(limit)
+        .orderBy(UsersTable.id);
+
+      const nextCursor = users[users.length - 1].id;
+
+      return {
+        data: users,
+        nextCursor,
+      };
+    },
   });
 });
