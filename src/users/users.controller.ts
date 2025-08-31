@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { UsersTable } from '../database/schema';
 import { defineController } from '../server';
-import { UsersSchema } from './users.schemas';
+import { UserSchema } from './users.schemas';
 
 export const UsersController = defineController(({ http, db }) => {
   const OffsetPaginationSchema = z.object({
@@ -29,7 +29,7 @@ export const UsersController = defineController(({ http, db }) => {
       querystring: OffsetPaginationSchema,
       response: {
         200: z.object({
-          data: z.array(UsersSchema),
+          data: z.array(UserSchema),
           nextOffset: z.number(),
           // metadata: PaginationMetadataSchema.optional(),
         }),
